@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - config.yml
+  tasks:
+    - name: Create folder for starship
+      file:
+        path: '{{ playbook_dir }}/.config/starship'
+        state: directory
+    - name: Download starship
+      get_url:
+        url: '{{ starship_download_url }}'
+        dest: '{{ playbook_dir }}/.config/starship.tar.gz'
+    - name: Unarchive starship
+      unarchive:
+        src: '{{ playbook_dir }}/.config/starship.tar.gz'
+        dest: '{{ playbook_dir }}/.config/starship'
+    
+    - name: Build all images
+      docker_image:
+        build:
+          path: .
+          dockerfile: '{{ item.path }}/Dockerfile'
+        name: '{{ image_name }}'
+        tag: '{{ item.tag }}'
+        source: build
+        force_source: yes
+        push: '{{ image_push }}'
+      loop: '{{ images }}'

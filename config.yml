@@ -1,0 +1,9 @@
+---
+image_name: 'czm1k3/dev-env'
+image_push: true
+starship_download_url: https://github.com/starship/starship/releases/download/v1.7.1/starship-x86_64-unknown-linux-musl.tar.gz
+images:
+  - tag: 'node-16'
+    path: './node/16'
+  - tag: 'node-18'
+    path: './node/18'
